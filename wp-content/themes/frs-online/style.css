@@ -1,0 +1,58 @@
+/*
+Theme Name: FRS Online
+Theme URI: https://frs-online.de
+Author: FRS GmbH & Co. KG
+Author URI: https://frs-online.de
+Description: Block theme for frs-online.de, built on Blockstudio v7. Migrated from Bricks + ACSS.
+Version: 2.0.0
+Requires at least: 6.6
+Tested up to: 6.8
+Requires PHP: 8.2
+License: Proprietary
+Text Domain: frs-online
+WC requires at least: 10.0
+*/
+
+:root {
+	--font-body: "Arimo", Arial, sans-serif;
+	--font-heading: "Montserrat", system-ui, sans-serif;
+	/* Sticky-offset for single-product gallery. Dev-measured 109px on
+	 * .frs-main-header--sticky (Playwright getBoundingClientRect at /, 2026-05-03);
+	 * prod measured 80px. We use 110px (dev value, rounded) per Gate B amendment
+	 * "use the dev value if it differs". The sticky gallery (single-product
+	 * 2-col grid) consumes this via container/style.scoped.css. */
+	--header-height: 110px;
+}
+
+body {
+	font-family: var(--font-body);
+}
+
+/* WooCommerce taxonomy-product_cat archive — page-level layout wrapper.
+ * The archive's main column is content-width-clamped and gets vertical
+ * rhythm between sections. Per-block scoped CSS owns everything inside.
+ */
+.frs-archive {
+	max-width: var(--content-width, 1200px);
+	margin-inline: auto;
+	padding-inline: var(--space-m);
+	padding-block: var(--space-l);
+}
+
+.frs-archive > * + * {
+	margin-block-start: var(--space-m);
+}
+
+.frs-archive__title {
+	margin: 0;
+	font-family: var(--font-heading);
+	font-size: var(--h1, 2rem);
+	line-height: 1.2;
+}
+
+.frs-archive__description {
+	margin: 0;
+	font-family: var(--font-body);
+	font-size: var(--text-m);
+	color: color-mix(in oklch, var(--text-dark, currentColor) 80%, transparent);
+}

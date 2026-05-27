@@ -1,0 +1,195 @@
+/* File: automatic-gutenberg.css - Version: 3.3.6 - Generated: 2026-02-24 13:41:13 */
+:root {
+  --wp-page-block-width: 100%;
+  --wp-post-block-width: 767px;
+}
+.wp-block-button[class*="btn--"] {
+  padding: 0 !important;
+  background-color: transparent !important;
+  min-inline-size: 0 !important;
+  border: 0 !important;
+}
+.btn--primary {
+  --btn-background: var(--primary);
+  --btn-background-hover: var(--primary-hover);
+  --btn-text-color: var(--primary-ultra-light);
+  --btn-text-color-hover: var(--primary-ultra-light);
+  --btn-border-color: var(--primary);
+  --btn-border-color-hover: var(--primary-hover);
+  --focus-color: var(--primary-light);
+}
+.btn--primary-dark {
+  --btn-background: var(--primary-dark);
+  --btn-background-hover: var(--primary-ultra-dark);
+  --btn-text-color: var(--primary-ultra-light);
+  --btn-text-color-hover: var(--primary-ultra-light);
+  --btn-border-color: var(--primary-dark);
+  --btn-border-color-hover: var(--primary-ultra-dark);
+  --focus-color: var(--primary-semi-dark);
+}
+.btn--primary-light {
+  --btn-background: var(--primary-ultra-light);
+  --btn-background-hover: var(--primary-light);
+  --btn-text-color: var(--primary);
+  --btn-text-color-hover: var(--primary-ultra-dark);
+  --btn-border-color: var(--primary-ultra-light);
+  --btn-border-color-hover: var(--primary-light);
+  --focus-color: var(--primary-light);
+}
+.btn--primary.btn--outline {
+  --btn-background: transparent;
+  --btn-background-hover: var(--primary-hover);
+  --btn-text-color: var(--primary);
+  --btn-text-color-hover: var(--primary-ultra-light);
+  --btn-border-width: 2px;
+  --btn-border-color: var(--primary);
+  --btn-border-color-hover: var(--primary-hover);
+  --focus-color: var(--primary-light);
+}
+.btn--primary-dark.btn--outline {
+  --btn-background: transparent;
+  --btn-background-hover: var(--primary-dark);
+  --btn-text-color: var(--primary-dark);
+  --btn-text-color-hover: var(--primary-ultra-light);
+  --btn-border-width: 2px;
+  --btn-border-color: var(--primary-dark);
+  --btn-border-color-hover: var(--primary-dark);
+  --focus-color: var(--primary-light);
+}
+.btn--primary-light.btn--outline {
+  --btn-background: transparent;
+  --btn-background-hover: var(--primary-light);
+  --btn-text-color: var(--primary-light);
+  --btn-text-color-hover: var(--primary-dark);
+  --btn-border-width: 2px;
+  --btn-border-color: var(--primary-light);
+  --btn-border-color-hover: var(--primary-light);
+  --focus-color: var(--primary-light);
+}
+.btn--secondary {
+  --btn-background: var(--secondary);
+  --btn-background-hover: var(--secondary-hover);
+  --btn-text-color: var(--secondary-ultra-light);
+  --btn-text-color-hover: var(--secondary-ultra-light);
+  --btn-border-color: var(--secondary);
+  --btn-border-color-hover: var(--secondary-hover);
+  --focus-color: var(--secondary-light);
+}
+.btn--secondary-dark {
+  --btn-background: var(--secondary-dark);
+  --btn-background-hover: var(--secondary-ultra-dark);
+  --btn-text-color: var(--secondary-ultra-light);
+  --btn-text-color-hover: var(--secondary-ultra-light);
+  --btn-border-color: var(--secondary-dark);
+  --btn-border-color-hover: var(--secondary-ultra-dark);
+  --focus-color: var(--secondary-semi-dark);
+}
+.btn--secondary-light {
+  --btn-background: var(--secondary-ultra-light);
+  --btn-background-hover: var(--secondary-light);
+  --btn-text-color: var(--secondary);
+  --btn-text-color-hover: var(--secondary-ultra-dark);
+  --btn-border-color: var(--secondary-ultra-light);
+  --btn-border-color-hover: var(--secondary-light);
+  --focus-color: var(--secondary-light);
+}
+.btn--secondary.btn--outline {
+  --btn-background: transparent;
+  --btn-background-hover: var(--secondary-hover);
+  --btn-text-color: var(--secondary);
+  --btn-text-color-hover: var(--secondary-ultra-light);
+  --btn-border-width: 2px;
+  --btn-border-color: var(--secondary);
+  --btn-border-color-hover: var(--secondary-hover);
+  --focus-color: var(--secondary-light);
+}
+.btn--secondary-dark.btn--outline {
+  --btn-background: transparent;
+  --btn-background-hover: var(--secondary-dark);
+  --btn-text-color: var(--secondary-dark);
+  --btn-text-color-hover: var(--secondary-ultra-light);
+  --btn-border-width: 2px;
+  --btn-border-color: var(--secondary-dark);
+  --btn-border-color-hover: var(--secondary-dark);
+  --focus-color: var(--secondary-light);
+}
+.btn--secondary-light.btn--outline {
+  --btn-background: transparent;
+  --btn-background-hover: var(--secondary-light);
+  --btn-text-color: var(--secondary-light);
+  --btn-text-color-hover: var(--secondary-dark);
+  --btn-border-width: 2px;
+  --btn-border-color: var(--secondary-light);
+  --btn-border-color-hover: var(--secondary-light);
+  --focus-color: var(--secondary-light);
+}
+.btn--accent {
+  --btn-background: var(--accent);
+  --btn-background-hover: var(--accent-hover);
+  --btn-text-color: var(--accent-ultra-light);
+  --btn-text-color-hover: var(--accent-ultra-light);
+  --btn-border-color: var(--accent);
+  --btn-border-color-hover: var(--accent-hover);
+  --focus-color: var(--accent-light);
+}
+[class*="btn--"]:not(.btn--none, .wp-block-button), .wp-block-button[class*="btn--"] > .wp-block-button__link, .wp-block-button[class*="btn--"] > a {
+  background: var(--btn-background);
+  color: var(--btn-text-color);
+  padding-block: var(--btn-padding-block);
+  padding-inline: var(--btn-padding-inline);
+  min-inline-size: var(--btn-min-width);
+  line-height: var(--btn-line-height);
+  font-size: var(--btn-font-size, var(--text-m));
+  font-weight: var(--btn-font-weight);
+  font-style: var(--btn-font-style);
+  text-transform: var(--btn-text-transform);
+  letter-spacing: var(--btn-letter-spacing);
+  text-decoration: var(--btn-text-decoration);
+  border-width: var(--btn-border-width);
+  border-style: var(--btn-border-style);
+  border-radius: var(--btn-radius);
+  border-color: var(--btn-border-color);
+  transition: var(--btn-transition, var(--transition));
+  justify-content: var(--btn-justify-content, center);
+  text-align: var(--btn-text-align, center);
+}
+@media (hover: hover) and (pointer: fine) {
+  [class*="btn--"]:not(.btn--none, .wp-block-button):hover, .wp-block-button[class*="btn--"] > .wp-block-button__link:hover, .wp-block-button[class*="btn--"] > a:hover {
+    background: var(--btn-background-hover);
+    color: var(--btn-text-color-hover);
+    border-color: var(--btn-border-color-hover);
+    text-decoration: var(--btn-text-decoration-hover);
+  }
+}
+[class*="btn--"]:not(.btn--none, .wp-block-button):focus, .wp-block-button[class*="btn--"] > .wp-block-button__link:focus, .wp-block-button[class*="btn--"] > a:focus {
+  box-shadow: 0 0 0 var(--focus-width) var(--focus-color);
+  outline: none;
+}
+.btn--xs:not(.wp-block-button), .wp-block-button.btn--xs > a, .wp-block-button.btn--xs > .wp-block-button__link {
+  font-size: var(--text-xs);
+}
+.btn--s:not(.wp-block-button), .wp-block-button.btn--s > a, .wp-block-button.btn--s > .wp-block-button__link {
+  font-size: var(--text-s);
+}
+.btn--m:not(.wp-block-button), .wp-block-button.btn--m > a, .wp-block-button.btn--m > .wp-block-button__link {
+  font-size: var(--text-m);
+}
+.btn--l:not(.wp-block-button), .wp-block-button.btn--l > a, .wp-block-button.btn--l > .wp-block-button__link {
+  font-size: var(--text-l);
+}
+.btn--xl:not(.wp-block-button), .wp-block-button.btn--xl > a, .wp-block-button.btn--xl > .wp-block-button__link {
+  font-size: var(--text-xl);
+}
+.btn--xxl:not(.wp-block-button), .wp-block-button.btn--xxl > a, .wp-block-button.btn--xxl > .wp-block-button__link {
+  font-size: var(--text-xxl);
+}
+a[class*="btn--"] {
+  display: inline-flex;
+}
+.btn--clear.btn--clear, .btn--none.btn--none {
+  background: none;
+  border: none;
+}
+.editor-styles-wrapper {
+  width: 100% !important;
+}
