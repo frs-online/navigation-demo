@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FRS-Online — Megamenü-Playground</title>
+<meta name="robots" content="noindex">
+<style>
+/* ============================================================================
+   FRS-Online — Megamenü-Playground
+   6 Richtungen für eine eigene Kategorie-Zeile im Header.
+   Variante 0 = aktuelle Prod-Ansicht (#topmenu_container), 1–5 = Alternativen.
+   Markenfarben verbatim aus prod-verbatim/03-acss-automatic.css.
+   ========================================================================== */
+
+@font-face{font-family:"Montserrat";font-weight:400;font-display:swap;
+  src:url("wp-content/themes/frs-online/assets/fonts/montserrat/montserrat-400-normal.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:swap;
+  src:url("wp-content/themes/frs-online/assets/fonts/montserrat/montserrat-600-normal.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:swap;
+  src:url("wp-content/themes/frs-online/assets/fonts/montserrat/montserrat-700-normal.woff2") format("woff2");}
+@font-face{font-family:"Arimo";font-weight:400;font-display:swap;
+  src:url("wp-content/themes/frs-online/assets/fonts/arimo/arimo-400-normal.woff2") format("woff2");}
+@font-face{font-family:"Arimo";font-weight:700;font-display:swap;
+  src:url("wp-content/themes/frs-online/assets/fonts/arimo/arimo-700-normal.woff2") format("woff2");}
+
+:root{
+  /* brand (exact prod hex) */
+  --primary:#d2322d; --primary-hover:#b71e1a; --primary-dark:#8f1815;
+  --secondary:#428bca; --secondary-hover:#357ab8; --secondary-trans:rgba(66,139,202,.3);
+  --accent:#1abc9c; --base:#343b43; --base-2:#4a525c;
+  --white:#fff; --ink:#2b2f36; --muted:#6b7280;
+  --line:#e3e6ea; --bg:#f5f7f9; --panel:#fff;
+  --shadow:0 18px 50px rgba(20,27,38,.16); --shadow-sm:0 6px 18px rgba(20,27,38,.10);
+  --r:8px; --maxw:1320px;
+  --font-head:"Montserrat",system-ui,sans-serif;
+  --font-body:"Arimo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--font-body);color:var(--ink);background:var(--bg);line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--secondary);outline-offset:2px;border-radius:4px}
+ul{margin:0;padding:0;list-style:none}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:24px}
+
+/* ---- Playground switcher (sticky control strip, not part of the design) --- */
+.pg-bar{position:sticky;top:0;z-index:200;background:var(--base);color:var(--white);
+  border-bottom:3px solid var(--primary)}
+.pg-bar__inner{max-width:var(--maxw);margin-inline:auto;padding:10px 24px;display:flex;
+  align-items:center;gap:18px;flex-wrap:wrap}
+.pg-bar__brand{font-family:var(--font-head);font-weight:700;font-size:13px;letter-spacing:.14em;
+  text-transform:uppercase;color:#fff;opacity:.85;white-space:nowrap}
+.pg-bar__brand b{color:var(--primary);filter:brightness(1.5)}
+.pg-seg{display:flex;flex-wrap:wrap;gap:6px}
+.pg-seg button{font-family:var(--font-head);font-weight:600;font-size:13px;color:#cdd3da;
+  padding:7px 12px;border-radius:6px;border:1px solid transparent;transition:.15s;display:flex;
+  align-items:center;gap:7px;line-height:1}
+.pg-seg button .n{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#566069;
+  color:#fff;font-size:11px;align-items:center;justify-content:center;font-weight:700}
+.pg-seg button:hover{background:#454d57;color:#fff}
+.pg-seg button[aria-pressed="true"]{background:var(--primary);color:#fff}
+.pg-seg button[aria-pressed="true"] .n{background:rgba(255,255,255,.25)}
+.pg-meta{max-width:var(--maxw);margin-inline:auto;padding:0 24px 12px;display:flex;gap:14px;
+  align-items:baseline;flex-wrap:wrap;color:#aeb6bf;font-size:13px}
+.pg-meta .ttl{font-family:var(--font-head);font-weight:700;color:#fff;font-size:14px}
+.pg-meta .ex{color:#8c95a0;font-style:italic}
+.pg-meta .tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  padding:2px 8px;border-radius:999px;background:rgba(26,188,156,.18);color:#5fe0c4}
+
+/* ---- Shared site-header chrome ------------------------------------------- */
+.frs{background:var(--white);box-shadow:var(--shadow-sm);position:relative;z-index:50}
+.frs__util{display:flex;align-items:center;gap:22px;padding:14px 0}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo__mark{width:42px;height:42px;border-radius:7px;background:var(--primary);color:#fff;
+  font-family:var(--font-head);font-weight:800;font-size:17px;display:grid;place-items:center;letter-spacing:.02em}
+.logo__txt{font-family:var(--font-head);font-weight:700;font-size:19px;color:var(--base);line-height:1.05}
+.logo__txt small{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.frs__search{flex:1;display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--line);
+  border-radius:999px;padding:11px 18px;color:var(--muted);max-width:560px}
+.frs__search input{border:0;background:none;flex:1;font-size:15px;color:var(--ink);outline:none}
+.frs__actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.frs__btn{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--r);font-size:14px;
+  font-weight:600;color:var(--base);white-space:nowrap}
+.frs__btn:hover{background:var(--bg)}
+.frs__btn--cta{background:var(--secondary);color:#fff}
+.frs__btn--cta:hover{background:var(--secondary-hover)}
+.frs__phone{font-family:var(--font-head);font-weight:700;color:var(--primary);font-size:15px}
+.frs__burger{display:none}
+.ico{width:20px;height:20px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.ico--sm{width:16px;height:16px}
+
+/* category nav region (the part each variant replaces) */
+#catnav{position:relative}
+
+/* faux page body */
+.page{padding:34px 0 80px}
+.page__hero{background:linear-gradient(120deg,var(--base),#222831);color:#fff;border-radius:14px;
+  padding:46px 40px;margin-bottom:30px}
+.page__hero h1{font-family:var(--font-head);font-weight:800;font-size:30px;margin:0 0 8px}
+.page__hero p{margin:0;color:#c7ccd3;max-width:60ch}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.card__img{aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#eef1f4,#eef1f4 12px,#e7ebef 12px,#e7ebef 24px);
+  display:grid;place-items:center;color:#b6bdc6}
+.card__b{padding:14px}
+.card__b b{font-family:var(--font-head);font-size:14px;display:block;color:var(--base)}
+.card__b span{color:var(--muted);font-size:13px}
+.skeleton{height:11px;border-radius:6px;background:var(--line);margin-top:8px}
+.skeleton.s2{width:60%}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+
+/* shared overlay backdrop for click-out */
+.scrim{position:fixed;inset:0;background:rgba(20,27,38,.32);opacity:0;pointer-events:none;
+  transition:opacity .18s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+
+/* =====================================================================
+   VARIANT 0 — Baseline: prod #topmenu replica (dark navbar, hover)
+   ===================================================================== */
+.v0{background:var(--base)}
+.v0__bar{display:flex;flex-wrap:wrap}
+.v0__top{position:relative}
+.v0__top>a{display:flex;align-items:center;gap:6px;padding:13px 16px;color:#dfe3e8;
+  font-family:var(--font-head);font-weight:600;font-size:14px}
+.v0__top:hover>a{background:var(--secondary);color:#fff}
+.v0__top>a .ico{width:13px;height:13px}
+.v0 .sub{position:absolute;top:100%;left:0;min-width:240px;background:#3c434c;
+  box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(4px);transition:.12s;z-index:30}
+.v0__top:hover>.sub{opacity:1;visibility:visible;transform:none}
+.v0 .sub li{position:relative}
+.v0 .sub a{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 16px;
+  color:#dfe3e8;font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.05)}
+.v0 .sub a:hover{background:var(--secondary);color:#fff}
+.v0 .sub .sub{top:0;left:100%}
+.v0 .sub li:hover>.sub{opacity:1;visibility:visible;transform:none}
+.v0__hint{color:#8a929b;font-size:12px;padding:4px 16px}
+@media(max-width:760px){.v0__bar{display:none}}
+
+/* =====================================================================
+   VARIANT 1 — Persistent bar + full-width drop panel (click)
+   ===================================================================== */
+.v1__bar{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--white)}
+.v1__top{appearance:none;font-family:var(--font-head);font-weight:600;font-size:14.5px;color:var(--base);
+  padding:14px 17px;display:flex;align-items:center;gap:7px;border-bottom:3px solid transparent}
+.v1__top .ico{width:13px;height:13px;transition:transform .15s}
+.v1__top:hover{color:var(--primary)}
+.v1__top[aria-expanded="true"]{color:var(--primary);border-bottom-color:var(--primary)}
+.v1__top[aria-expanded="true"] .ico{transform:rotate(180deg)}
+.v1__panel{position:absolute;left:0;right:0;top:100%;background:var(--panel);box-shadow:var(--shadow);
+  border-top:1px solid var(--line);display:none;z-index:45}
+.v1__panel.on{display:block;animation:drop .18s ease}
+@keyframes drop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.v1__panel-in{padding:26px 0 30px}
+.v1__lead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.v1__lead h3{font-family:var(--font-head);font-size:20px;color:var(--base);margin:0}
+.cols{columns:4;column-gap:34px}
+@media(max-width:1100px){.cols{columns:3}}
+.col-grp{break-inside:avoid;margin-bottom:20px}
+.col-grp__h{font-family:var(--font-head);font-weight:700;font-size:14px;color:var(--primary);
+  margin:0 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.col-grp__h a{color:inherit}
+.col-grp li a{display:block;padding:5px 0;font-size:13.5px;color:#454c55}
+.col-grp li a:hover{color:var(--secondary)}
+.viewall{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--secondary);
+  font-family:var(--font-head);margin-top:6px}
+.viewall .ico{width:13px;height:13px}
+
+/* =====================================================================
+   VARIANT 2 — Left "Alle Kategorien" rail + flyout (click)
+   ===================================================================== */
+.v2__bar{display:flex;align-items:stretch;background:var(--white);border-bottom:1px solid var(--line)}
+.v2__trigger{display:flex;align-items:center;gap:10px;background:var(--primary);color:#fff;
+  font-family:var(--font-head);font-weight:700;font-size:14.5px;padding:0 20px;height:50px}
+.v2__trigger:hover{background:var(--primary-hover)}
+.v2__quick{display:flex;align-items:center;overflow:hidden}
+.v2__quick a{padding:0 15px;font-family:var(--font-head);font-weight:600;font-size:14px;color:var(--base);
+  display:flex;align-items:center;height:50px}
+.v2__quick a:hover{color:var(--primary)}
+.v2__flyout{position:absolute;left:0;top:100%;display:none;background:var(--panel);box-shadow:var(--shadow);
+  border:1px solid var(--line);z-index:45;width:min(960px,94vw);grid-template-columns:260px 1fr}
+.v2__flyout.on{display:grid;animation:drop .16s ease}
+.v2__rail{background:var(--bg);border-right:1px solid var(--line);padding:8px 0;max-height:62vh;overflow:auto}
+.v2__rail button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;
+  padding:11px 18px;font-family:var(--font-head);font-weight:600;font-size:14px;color:var(--base)}
+.v2__rail button .ico{width:14px;height:14px;color:var(--muted)}
+.v2__rail button:hover,.v2__rail button[aria-selected="true"]{background:#fff;color:var(--primary)}
+.v2__rail button[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--primary)}
+.v2__detail{padding:24px 28px;max-height:62vh;overflow:auto}
+.v2__detail h3{font-family:var(--font-head);font-size:19px;margin:0 0 16px;color:var(--base)}
+@media(max-width:760px){.v2__quick{display:none}}
+
+/* =====================================================================
+   VARIANT 3 — Tabbed master–detail panel (click)
+   ===================================================================== */
+.v3__bar{display:flex;background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.v3__trigger{display:flex;align-items:center;gap:9px;font-family:var(--font-head);font-weight:700;font-size:14.5px;
+  color:var(--base);padding:14px 20px}
+.v3__trigger .ico{width:14px;height:14px;transition:transform .15s}
+.v3__trigger[aria-expanded="true"]{color:var(--primary)}
+.v3__trigger[aria-expanded="true"] .ico{transform:rotate(180deg)}
+.v3__hint{align-self:center;color:var(--muted);font-size:12.5px}
+.v3__panel{position:absolute;left:0;right:0;top:100%;display:none;background:var(--panel);box-shadow:var(--shadow);
+  border-top:1px solid var(--line);z-index:45}
+.v3__panel.on{display:block;animation:drop .18s ease}
+.v3__grid{display:grid;grid-template-columns:280px 1fr;min-height:340px}
+.v3__tabs{background:var(--bg);border-right:1px solid var(--line);padding:14px 0}
+.v3__tabs button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;
+  padding:12px 22px;font-family:var(--font-head);font-weight:600;font-size:14.5px;color:var(--base)}
+.v3__tabs button .ico{width:14px;height:14px;opacity:0;color:var(--primary)}
+.v3__tabs button:hover{color:var(--primary)}
+.v3__tabs button[aria-selected="true"]{background:#fff;color:var(--primary);box-shadow:inset 4px 0 0 var(--primary)}
+.v3__tabs button[aria-selected="true"] .ico{opacity:1}
+.v3__detail{padding:26px 30px}
+.v3__detail h3{font-family:var(--font-head);font-size:20px;margin:0 0 18px;color:var(--base)}
+@media(max-width:760px){.v3__grid{grid-template-columns:1fr}.v3__tabs{display:none}}
+
+/* =====================================================================
+   VARIANT 4 — Image-tile category grid (click)
+   ===================================================================== */
+.v4__bar{display:flex;flex-wrap:wrap;background:var(--white);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)}
+.v4__top{font-family:var(--font-head);font-weight:600;font-size:14.5px;color:var(--base);padding:14px 17px;
+  display:flex;align-items:center;gap:7px;border-bottom:3px solid transparent}
+.v4__top .ico{width:13px;height:13px}
+.v4__top:hover{color:var(--primary)}
+.v4__top[aria-expanded="true"]{color:var(--primary);border-bottom-color:var(--primary)}
+.v4__panel{position:absolute;left:0;right:0;top:100%;display:none;background:var(--panel);box-shadow:var(--shadow);
+  border-top:1px solid var(--line);z-index:45}
+.v4__panel.on{display:block;animation:drop .18s ease}
+.v4__in{padding:26px 0 30px}
+.v4__in h3{font-family:var(--font-head);font-size:20px;margin:0 0 18px;color:var(--base)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1100px){.tiles{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:.15s;background:#fff}
+.tile:hover{border-color:var(--secondary);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.tile__img{aspect-ratio:16/10;display:grid;place-items:center;color:#fff;
+  font-family:var(--font-head);font-weight:800;font-size:30px;letter-spacing:.04em}
+.tile__b{padding:12px 14px}
+.tile__b b{font-family:var(--font-head);font-size:14.5px;color:var(--base);display:block}
+.tile__b span{font-size:12.5px;color:var(--muted)}
+
+/* =====================================================================
+   VARIANT 5 — Search-led command palette (click → modal overlay)
+   ===================================================================== */
+.v5__bar{display:flex;align-items:center;gap:16px;background:var(--white);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:11px 0}
+.v5__trigger{flex:1;display:flex;align-items:center;gap:12px;background:var(--bg);border:1px solid var(--line);
+  border-radius:999px;padding:13px 20px;color:var(--muted);font-size:15px;text-align:left;max-width:620px}
+.v5__trigger .ico{color:var(--primary)}
+.v5__trigger kbd{margin-left:auto;font-family:var(--font-body);font-size:11px;background:#fff;border:1px solid var(--line);
+  border-radius:5px;padding:2px 7px;color:var(--muted)}
+.v5__chips{display:flex;gap:8px;flex-wrap:wrap}
+.v5__chips a{font-family:var(--font-head);font-weight:600;font-size:13px;color:var(--base);
+  border:1px solid var(--line);border-radius:999px;padding:7px 13px}
+.v5__chips a:hover{border-color:var(--primary);color:var(--primary)}
+.v5__modal{position:fixed;inset:0;z-index:120;display:none;align-items:flex-start;justify-content:center;padding:8vh 16px}
+.v5__modal.on{display:flex}
+.v5__box{background:#fff;width:min(720px,100%);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;
+  display:flex;flex-direction:column;max-height:80vh;animation:drop .18s ease}
+.v5__field{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.v5__field .ico{color:var(--primary);width:22px;height:22px}
+.v5__field input{flex:1;border:0;outline:none;font-size:18px;font-family:var(--font-body);color:var(--ink)}
+.v5__field button{color:var(--muted);font-size:13px;font-weight:700}
+.v5__list{overflow:auto;padding:8px}
+.v5__row{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:8px;cursor:pointer}
+.v5__row:hover,.v5__row.active{background:var(--bg)}
+.v5__row .crumb{color:var(--muted);font-size:12.5px}
+.v5__row .leaf{font-family:var(--font-head);font-weight:600;color:var(--base);font-size:14.5px}
+.v5__row mark{background:rgba(66,139,202,.22);color:inherit;border-radius:3px}
+.v5__sect{font-family:var(--font-head);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--muted);padding:12px 14px 6px}
+.v5__empty{padding:30px;text-align:center;color:var(--muted)}
+
+/* =====================================================================
+   Mobile off-canvas drawer (shared across all variants < 760px)
+   ===================================================================== */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(380px,90vw);background:#fff;z-index:130;
+  transform:translateX(100%);transition:transform .22s ease;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.drawer.on{transform:none}
+.drawer__head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:var(--base);color:#fff}
+.drawer__head b{font-family:var(--font-head);font-size:16px}
+.drawer__search{display:flex;gap:9px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.drawer__search input{flex:1;border:0;background:none;outline:none;font-size:15px}
+.drawer__body{overflow:auto;flex:1;padding:6px 0}
+.acc li{border-bottom:1px solid var(--line)}
+.acc__row{display:flex;align-items:center;width:100%;text-align:left}
+.acc__row a,.acc__row .lbl{flex:1;padding:13px 18px;font-family:var(--font-head);font-weight:600;font-size:14.5px;color:var(--base)}
+.acc__row .tog{padding:13px 16px;color:var(--muted)}
+.acc__row .tog .ico{transition:transform .15s}
+.acc__row .tog[aria-expanded="true"] .ico{transform:rotate(180deg)}
+.acc .kids{display:none;background:var(--bg)}
+.acc .kids.on{display:block}
+.acc .kids .acc__row a,.acc .kids .acc__row .lbl{padding-left:34px;font-weight:500;font-size:14px}
+.acc .kids .kids .acc__row a,.acc .kids .kids .acc__row .lbl{padding-left:50px;color:#5b636d}
+.acc .viewall{margin:0;padding:9px 18px}
+@media(max-width:760px){
+  .frs__search,.frs__phone,.frs__actions .frs__btn span{display:none}
+  .frs__burger{display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:var(--r);
+    font-family:var(--font-head);font-weight:700;color:#fff;background:var(--primary)}
+  #catnav{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ Playground control strip (meta, not the design) ============ -->
+<div class="pg-bar">
+  <div class="pg-bar__inner">
+    <span class="pg-bar__brand">FRS<b>·</b>Megamenü-Playground</span>
+    <div class="pg-seg" role="tablist" aria-label="Varianten">
+      <button data-v="0" aria-pressed="true"><span class="n">0</span>Aktuell (Prod)</button>
+      <button data-v="1" aria-pressed="false"><span class="n">1</span>Leiste + Vollbreite</button>
+      <button data-v="2" aria-pressed="false"><span class="n">2</span>Linke Leiste</button>
+      <button data-v="3" aria-pressed="false"><span class="n">3</span>Reiter-Panel</button>
+      <button data-v="4" aria-pressed="false"><span class="n">4</span>Bild-Kacheln</button>
+      <button data-v="5" aria-pressed="false"><span class="n">5</span>Such-Palette</button>
+    </div>
+  </div>
+  <div class="pg-meta">
+    <span class="ttl" id="pgTtl"></span>
+    <span id="pgDesc"></span>
+    <span class="ex" id="pgEx"></span>
+    <span class="tag" id="pgTag" hidden>Empfohlen</span>
+  </div>
+</div>
+
+<!-- ============ Site-header chrome (shared) ============ -->
+<header class="frs">
+  <div class="wrap">
+    <div class="frs__util">
+      <a class="logo" href="#" aria-label="FRS-Online Startseite">
+        <span class="logo__mark">FRS</span>
+        <span class="logo__txt">FRS-Online<small>B2B-Fachhandel · Sicherheitstechnik</small></span>
+      </a>
+      <div class="frs__search">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Artikel, Marke oder Artikelnr. suchen …" aria-label="Suche">
+      </div>
+      <div class="frs__actions">
+        <span class="frs__phone">+49 (0) 5251 · 18 96 0</span>
+        <a class="frs__btn" href="#"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Konto</span></a>
+        <a class="frs__btn frs__btn--cta" href="#"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.6-1.2L22 7H6"/></svg><span>Warenkorb</span></a>
+        <button class="frs__burger" id="burger" aria-label="Menü öffnen">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menü
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- category nav region — swapped per variant -->
+  <div id="catnav"></div>
+</header>
+
+<!-- ============ Faux page body ============ -->
+<main class="page">
+  <div class="wrap">
+    <div class="page__hero">
+      <h1>Sicherheitstechnik für den Fachhandel</h1>
+      <p>Videotechnik, Netzwerk, Zutritt, Intercom &amp; Alarm — über die Kategorie-Zeile oben
+         erreichen Sie das komplette Sortiment. Wählen Sie oben eine Richtung (0–5), um die
+         Navigations­varianten zu vergleichen.</p>
+    </div>
+    <div class="grid" id="fauxGrid"></div>
+  </div>
+</main>
+
+<div class="scrim" id="scrim"></div>
+
+<!-- ============ Mobile drawer (shared) ============ -->
+<aside class="drawer" id="drawer" aria-label="Sortiment">
+  <div class="drawer__head"><b>Sortiment</b>
+    <button id="drawerClose" aria-label="Schließen"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="drawer__search">
+    <svg class="ico ico--sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" placeholder="Kategorie suchen …" aria-label="Kategorie suchen" id="drawerSearch">
+  </div>
+  <div class="drawer__body" id="drawerBody"></div>
+</aside>
+
+<script>
+/* ====================================================================
+   Category data — real FRS-Online taxonomy (scraped from prod #topnavi)
+   9 top categories · 3 levels · "Alle anzeigen" links re-added per panel.
+   ==================================================================== */
+const CATS = [
+  { name:"Neuheiten" },
+  { name:"Videotechnik", children:[
+    { name:"IP / Netzwerk", children:[{name:"Kameras"},{name:"Recorder (NVR, PC)"},{name:"Software"},{name:"Decoder"}] },
+    { name:"Koax", children:[{name:"Kameras"},{name:"Recorder"},{name:"Datenübertragung"},{name:"Videoserver"},{name:"Signalverarbeitende Geräte"},{name:"Kabel, Stecker, Werkzeug"}] },
+    { name:"Kamera-Zubehör", children:[{name:"Objektive"},{name:"Kamerahalter"},{name:"Schutzgehäuse"},{name:"Scheinwerfer"},{name:"Anschlusskästen"},{name:"Mast- / Eckhalter"},{name:"Kamera-Attrappen"},{name:"Ersatzteile"}] },
+    { name:"Weiteres Zubehör", children:[{name:"Aufkleber, Schilder, Bücher"},{name:"Monitore"},{name:"PTZ-Zubehör"},{name:"Recorder-Zubehör"},{name:"GeoVision-Zubehör"},{name:"Spannungsversorgung"},{name:"Audio"},{name:"Computerverlängerungen"}] }
+  ]},
+  { name:"Netzwerktechnik", children:[
+    { name:"(PoE-)Switche", children:[{name:"Switche"},{name:"PoE-Switche"},{name:"Switche für Hutschiene"},{name:"PoE-Switche für Hutschiene"},{name:"PoE-Switche Outdoor"},{name:"PoE-Switche Deckeneinbau"},{name:"SFP-Module"}] },
+    { name:"PoE-Injektoren" },
+    { name:"IP/PoE-Zubehör" },
+    { name:"Medienkonverter", children:[{name:"LAN über Koax"},{name:"LAN über 2-Draht"},{name:"LAN über LWL"}] },
+    { name:"Router" },
+    { name:"Kabel, Stecker, Werkzeug", children:[{name:"Netzwerkkabel"},{name:"Stecker und Adapter"},{name:"Werkzeug"}] }
+  ]},
+  { name:"Intercom", children:[
+    { name:"Netzwerk Intercom", children:[{name:"Smart Intercoms"},{name:"Gesichtserkennung"},{name:"Mehrparteien Intercoms"},{name:"Paniktasten"},{name:"Videostationen"},{name:"Intercom Sets"}] },
+    { name:"2-Draht Intercom", children:[{name:"2-Draht Intercoms"},{name:"2-Draht Videostationen"}] },
+    { name:"IP-Telefone" },
+    { name:"Zubehör", children:[{name:"Adapter und Module"},{name:"Installationszubehör"}] }
+  ]},
+  { name:"Zutritt", children:[
+    {name:"Kontrolleinheiten"},{name:"Kartenleser"},{name:"Fingerabdruckleser"},{name:"UHF-Leser"},{name:"ID-Karten"},{name:"Programmiergeräte"},{name:"Zutrittsmanagement-Software"}
+  ]},
+  { name:"IoT", children:[{name:"LoRaWAN Gateway"},{name:"LoRaWAN Raumklima"},{name:"LoRaWAN Sensorik und Schalter"}] },
+  { name:"Alarm", children:[
+    { name:"Zentralen und Zubehör" },
+    { name:"Melder Indoor", children:[{name:"Bewegungsmelder"},{name:"Magnetschalter"},{name:"Glasbruchsensoren"},{name:"Schließblechkontakt und Überfallschalter"},{name:"Rauchmelder"}] },
+    { name:"Melder Outdoor", children:[{name:"AVS Außensicherung (passiv)"},{name:"AVS Außensicherung (aktiv)"},{name:"AVS Freilandsicherung"}] },
+    { name:"Vernebelungsanlagen" },{ name:"Signalgeber" },{ name:"Wähl- und Übertragungsgeräte" },{ name:"Fernschalter und Akku" }
+  ]},
+  { name:"Sale", children:[{name:"Kameras"},{name:"Kamera-Halterungen"},{name:"Zubehör"},{name:"Ersatzteile"}] },
+  { name:"Service", children:[{name:"Werbematerial"},{name:"Preislisten"},{name:"Support"},{name:"RMA"},{name:"FRS-News"},{name:"Schulungen"}] }
+];
+
+const META = [
+  { t:"Variante 0 — Aktuelle Prod-Ansicht", d:"Dunkle Navbar, eine Zeile, Hover-Dropdowns (3 Ebenen).", ex:"Status quo: #topmenu_container", rec:false },
+  { t:"Variante 1 — Leiste + Vollbreiten-Panel", d:"Eigene Kategorie-Zeile; Klick öffnet ein Panel über die volle Breite (Spalten + „Alle anzeigen“).", ex:"wie Walmart, Best Buy", rec:true },
+  { t:"Variante 2 — Linke „Alle Kategorien“-Leiste", d:"Vertikale Liste der Hauptkategorien; Auswahl blendet die Unterkategorien rechts ein.", ex:"wie Amazon, IKEA", rec:false },
+  { t:"Variante 3 — Reiter-Panel (Master-Detail)", d:"Ein Panel; links Kategorien als Reiter, rechts der gewählte Unterbaum — ideal für tiefe Bäume.", ex:"wie eBay, Microsoft", rec:true },
+  { t:"Variante 4 — Bild-Kacheln", d:"Klick öffnet ein Panel mit Unterkategorien als Bild-Kacheln im Raster.", ex:"wie Apple, H&M", rec:false },
+  { t:"Variante 5 — Such-Palette", d:"Ein Such-Overlay über dem Kategorie-Baum — tippen filtert alle 123 Knoten, oder durchblättern.", ex:"modernes Command-Palette-Muster", rec:false }
+];
+
+/* ---- tiny helpers -------------------------------------------------- */
+const ICO = {
+  chev:'<svg class="ico" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>',
+  right:'<svg class="ico" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>',
+  arrow:'<svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  search:'<svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>'
+};
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const leaves = n => n.children ? n.children.flatMap(leaves) : [n];
+const PALETTE = ['#d2322d','#428bca','#1abc9c','#e67e22','#8e44ad','#16a085','#2c3e50','#c0392b','#2980b9'];
+const tint = i => PALETTE[i % PALETTE.length];
+const initials = s => s.replace(/[^A-Za-zÄÖÜ0-9]/g,'').slice(0,2).toUpperCase();
+
+const catnav = document.getElementById('catnav');
+const scrim  = document.getElementById('scrim');
+let current = 0;
+
+/* shared: build the 4-column "groups" markup for a top category (V1/V3) */
+function groupsHTML(top){
+  const subs = top.children || [];
+  return `<div class="cols">` + subs.map(s=>{
+    const kids = s.children || [];
+    const head = `<p class="col-grp__h"><a href="#">${esc(s.name)}</a></p>`;
+    const list = kids.length
+      ? `<ul>${kids.map(k=>`<li><a href="#">${esc(k.name)}</a></li>`).join('')}</ul>`
+      : '';
+    return `<div class="col-grp">${head}${list}</div>`;
+  }).join('') + `</div>`;
+}
+const viewAll = label => `<a class="viewall" href="#">Alle ${esc(label)} anzeigen ${ICO.arrow}</a>`;
+
+/* ==================================================================== */
+/* Renderers — each returns the nav region for #catnav and wires events  */
+/* ==================================================================== */
+
+function render0(){ /* Baseline: dark navbar, hover cascading */
+  const li = (n,lvl)=>{
+    const kids = n.children || [];
+    const caret = kids.length ? (lvl===1?ICO.chev:ICO.right) : '';
+    const sub = kids.length ? `<ul class="sub">${kids.map(k=>li(k,lvl+1)).join('')}</ul>` : '';
+    const cls = lvl===1 ? 'v0__top' : '';
+    return `<li class="${cls}"><a href="#">${esc(n.name)}${caret}</a>${sub}</li>`;
+  };
+  catnav.innerHTML = `<div class="v0"><div class="wrap"><ul class="v0__bar">${CATS.map(c=>li(c,1)).join('')}</ul>
+    <div class="v0__hint">Aktuell: Hover öffnet die Untermenüs (kaskadierend, 3 Ebenen).</div></div></div>`;
+}
+
+function render1(){ /* Persistent bar + full-width click panel */
+  const bar = CATS.map((c,i)=>`<button class="v1__top" data-i="${i}" aria-expanded="false"${c.children?'':' data-leaf'}>${esc(c.name)}${c.children?ICO.chev:''}</button>`).join('');
+  catnav.innerHTML = `<div class="v1"><div class="wrap"><div class="v1__bar">${bar}</div></div>
+    <div class="v1__panel" id="v1panel"><div class="wrap"><div class="v1__panel-in" id="v1in"></div></div></div></div>`;
+  const panel = catnav.querySelector('#v1panel'), inner = catnav.querySelector('#v1in');
+  let open = -1;
+  const close = ()=>{open=-1;panel.classList.remove('on');scrim.classList.remove('on');
+    catnav.querySelectorAll('.v1__top').forEach(b=>b.setAttribute('aria-expanded','false'));};
+  catnav._close = close;
+  catnav.querySelectorAll('.v1__top').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const i=+btn.dataset.i, c=CATS[i];
+      if(!c.children){close();return;}
+      if(open===i){close();return;}
+      open=i;
+      catnav.querySelectorAll('.v1__top').forEach(b=>b.setAttribute('aria-expanded', b===btn?'true':'false'));
+      inner.innerHTML = `<div class="v1__lead"><h3>${esc(c.name)}</h3>${viewAll(c.name)}</div>${groupsHTML(c)}`;
+      panel.classList.add('on'); scrim.classList.add('on');
+    });
+  });
+}
+
+function render2(){ /* Left rail + flyout */
+  catnav.innerHTML = `<div class="v2"><div class="wrap"><div class="v2__bar">
+      <button class="v2__trigger" id="v2btn" aria-expanded="false">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Alle Kategorien</button>
+      <nav class="v2__quick">${CATS.slice(1,7).map(c=>`<a href="#">${esc(c.name)}</a>`).join('')}</nav>
+    </div>
+    <div class="v2__flyout" id="v2fly">
+      <div class="v2__rail" id="v2rail">${CATS.map((c,i)=>`<button data-i="${i}" aria-selected="${i===1}">${esc(c.name)}${c.children?ICO.right:''}</button>`).join('')}</div>
+      <div class="v2__detail" id="v2det"></div>
+    </div></div></div>`;
+  const btn=catnav.querySelector('#v2btn'), fly=catnav.querySelector('#v2fly'),
+        rail=catnav.querySelector('#v2rail'), det=catnav.querySelector('#v2det');
+  const showDetail=i=>{const c=CATS[i];
+    rail.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected', +b.dataset.i===i?'true':'false'));
+    det.innerHTML = c.children
+      ? `<div class="v1__lead"><h3>${esc(c.name)}</h3>${viewAll(c.name)}</div>${groupsHTML(c)}`
+      : `<div class="v1__lead"><h3>${esc(c.name)}</h3>${viewAll(c.name)}</div><p style="color:var(--muted)">Direkt zur Kategorie.</p>`;
+  };
+  const close=()=>{fly.classList.remove('on');scrim.classList.remove('on');btn.setAttribute('aria-expanded','false');};
+  catnav._close=close;
+  btn.addEventListener('click',e=>{e.stopPropagation();
+    const on=fly.classList.toggle('on');btn.setAttribute('aria-expanded',on?'true':'false');
+    scrim.classList.toggle('on',on); if(on) showDetail(1);});
+  rail.querySelectorAll('button').forEach(b=>{
+    const i=+b.dataset.i;
+    b.addEventListener('mouseenter',()=>showDetail(i));
+    b.addEventListener('click',ev=>{ev.stopPropagation();showDetail(i);});
+  });
+  fly.addEventListener('click',e=>e.stopPropagation());
+}
+
+function render3(){ /* Tabbed master-detail */
+  catnav.innerHTML = `<div class="v3"><div class="wrap"><div class="v3__bar">
+      <button class="v3__trigger" id="v3btn" aria-expanded="false">${ICO.chev}<span>Sortiment</span></button>
+      <span class="v3__hint">Komplettes Sortiment in einem Panel — Reiter links, Unterkategorien rechts.</span>
+    </div></div>
+    <div class="v3__panel" id="v3panel"><div class="wrap"><div class="v3__grid">
+      <div class="v3__tabs" id="v3tabs">${CATS.map((c,i)=>`<button data-i="${i}" aria-selected="${i===1}">${esc(c.name)}${ICO.right}</button>`).join('')}</div>
+      <div class="v3__detail" id="v3det"></div>
+    </div></div></div></div>`;
+  const btn=catnav.querySelector('#v3btn'), panel=catnav.querySelector('#v3panel'),
+        tabs=catnav.querySelector('#v3tabs'), det=catnav.querySelector('#v3det');
+  const pick=i=>{const c=CATS[i];
+    tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected', +b.dataset.i===i?'true':'false'));
+    det.innerHTML = `<div class="v1__lead"><h3>${esc(c.name)}</h3>${viewAll(c.name)}</div>` +
+      (c.children?groupsHTML(c):`<p style="color:var(--muted)">Direkt zur Kategorie „${esc(c.name)}“.</p>`);
+  };
+  const close=()=>{panel.classList.remove('on');scrim.classList.remove('on');btn.setAttribute('aria-expanded','false');};
+  catnav._close=close;
+  btn.addEventListener('click',e=>{e.stopPropagation();
+    const on=panel.classList.toggle('on');btn.setAttribute('aria-expanded',on?'true':'false');
+    scrim.classList.toggle('on',on); if(on) pick(1);});
+  tabs.querySelectorAll('button').forEach(b=>{const i=+b.dataset.i;
+    b.addEventListener('click',ev=>{ev.stopPropagation();pick(i);});
+    b.addEventListener('mouseenter',()=>pick(i));});
+  panel.addEventListener('click',e=>e.stopPropagation());
+}
+
+function render4(){ /* Image-tile grid */
+  const bar = CATS.map((c,i)=>`<button class="v4__top" data-i="${i}" aria-expanded="false">${esc(c.name)}${c.children?ICO.chev:''}</button>`).join('');
+  catnav.innerHTML = `<div class="v4"><div class="wrap"><div class="v4__bar">${bar}</div></div>
+    <div class="v4__panel" id="v4panel"><div class="wrap"><div class="v4__in" id="v4in"></div></div></div></div>`;
+  const panel=catnav.querySelector('#v4panel'), inner=catnav.querySelector('#v4in');
+  let open=-1;
+  const close=()=>{open=-1;panel.classList.remove('on');scrim.classList.remove('on');
+    catnav.querySelectorAll('.v4__top').forEach(b=>b.setAttribute('aria-expanded','false'));};
+  catnav._close=close;
+  catnav.querySelectorAll('.v4__top').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();const i=+btn.dataset.i,c=CATS[i];
+    if(!c.children){close();return;}
+    if(open===i){close();return;} open=i;
+    catnav.querySelectorAll('.v4__top').forEach(b=>b.setAttribute('aria-expanded',b===btn?'true':'false'));
+    const tiles=(c.children||[]).map((s,j)=>{
+      const cnt=s.children?`${s.children.length} Unterkategorien`:'Zur Kategorie';
+      return `<a class="tile" href="#"><div class="tile__img" style="background:linear-gradient(135deg,${tint(i+j)},${tint(i+j+3)})">${initials(s.name)}</div>
+        <div class="tile__b"><b>${esc(s.name)}</b><span>${cnt}</span></div></a>`;
+    }).join('');
+    inner.innerHTML = `<div class="v1__lead"><h3>${esc(c.name)}</h3>${viewAll(c.name)}</div><div class="tiles">${tiles}</div>`;
+    panel.classList.add('on');scrim.classList.add('on');
+  }));
+}
+
+function render5(){ /* Search-led command palette */
+  catnav.innerHTML = `<div class="v5"><div class="wrap"><div class="v5__bar">
+      <button class="v5__trigger" id="v5btn">${ICO.search}<span>Im Sortiment suchen oder Kategorie wählen …</span><kbd>⌘ K</kbd></button>
+      <div class="v5__chips">${CATS.slice(1,6).map(c=>`<a href="#">${esc(c.name)}</a>`).join('')}</div>
+    </div></div></div>
+    <div class="v5__modal" id="v5modal"><div class="v5__box">
+      <div class="v5__field">${ICO.search}<input id="v5input" type="text" placeholder="Kategorie suchen … (z. B. „PoE“, „Kamera“, „LoRaWAN“)" aria-label="Kategorie suchen"><button id="v5esc">ESC</button></div>
+      <div class="v5__list" id="v5list"></div>
+    </div></div>`;
+  const btn=catnav.querySelector('#v5btn'), modal=catnav.querySelector('#v5modal'),
+        input=catnav.querySelector('#v5input'), list=catnav.querySelector('#v5list');
+  // flat index: every node with its breadcrumb
+  const flat=[]; (function walk(ns,trail){ns.forEach(n=>{const t=[...trail,n.name];
+    flat.push({name:n.name,crumb:trail.join(' › '),hay:t.join(' ').toLowerCase()});
+    if(n.children) walk(n.children,t);});})(CATS,[]);
+  const browse=()=>CATS.map(c=>`<div class="v5__sect">${esc(c.name)}</div>`+
+      (c.children||[]).map(s=>`<div class="v5__row"><span class="leaf">${esc(s.name)}</span><span class="crumb">${esc(c.name)}</span></div>`).join('')).join('');
+  const hi=(s,q)=>{if(!q)return esc(s);const i=s.toLowerCase().indexOf(q.toLowerCase());
+    return i<0?esc(s):esc(s.slice(0,i))+'<mark>'+esc(s.slice(i,i+q.length))+'</mark>'+esc(s.slice(i+q.length));};
+  const draw=q=>{
+    if(!q){list.innerHTML=browse();return;}
+    const r=flat.filter(f=>f.hay.includes(q.toLowerCase())).slice(0,40);
+    list.innerHTML = r.length ? r.map(f=>`<div class="v5__row"><span class="leaf">${hi(f.name,q)}</span><span class="crumb">${esc(f.crumb)}</span></div>`).join('')
+      : `<div class="v5__empty">Keine Kategorie zu „${esc(q)}“.</div>`;
+  };
+  const open=()=>{modal.classList.add('on');scrim.classList.add('on');draw('');input.value='';setTimeout(()=>input.focus(),30);};
+  const close=()=>{modal.classList.remove('on');scrim.classList.remove('on');};
+  catnav._close=close;
+  btn.addEventListener('click',e=>{e.stopPropagation();open();});
+  input.addEventListener('input',()=>draw(input.value.trim()));
+  catnav.querySelector('#v5esc').addEventListener('click',close);
+  modal.addEventListener('click',e=>{if(e.target===modal)close();});
+  catnav.querySelectorAll('.v5__chips a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();open();}));
+}
+
+const RENDERERS=[render0,render1,render2,render3,render4,render5];
+
+/* ==================================================================== */
+/* Variant switching + shared close behavior                            */
+/* ==================================================================== */
+function setVariant(v){
+  current=v;
+  if(catnav._close) catnav._close();
+  catnav.innerHTML=''; catnav._close=null;
+  RENDERERS[v]();
+  document.querySelectorAll('.pg-seg button').forEach(b=>b.setAttribute('aria-pressed', +b.dataset.v===v?'true':'false'));
+  const m=META[v];
+  pgTtl.textContent=m.t; pgDesc.textContent=m.d; pgEx.textContent=m.ex;
+  document.getElementById('pgTag').hidden=!m.rec;
+}
+const pgTtl=document.getElementById('pgTtl'),pgDesc=document.getElementById('pgDesc'),pgEx=document.getElementById('pgEx');
+document.querySelectorAll('.pg-seg button').forEach(b=>b.addEventListener('click',()=>setVariant(+b.dataset.v)));
+
+/* close on scrim click + Esc (works for every variant) */
+scrim.addEventListener('click',()=>{ if(catnav._close)catnav._close(); closeDrawer(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if(catnav._close)catnav._close(); closeDrawer(); }});
+document.addEventListener('click',()=>{ if(catnav._close)catnav._close(); }); // click anywhere outside nav
+
+/* ==================================================================== */
+/* Mobile drawer — drill-down accordion (shared)                        */
+/* ==================================================================== */
+const drawer=document.getElementById('drawer'), drawerBody=document.getElementById('drawerBody');
+function accHTML(nodes,depth){
+  return `<ul class="acc">`+nodes.map(n=>{
+    const kids=n.children||[];
+    if(!kids.length) return `<li><div class="acc__row"><a href="#">${esc(n.name)}</a></div></li>`;
+    return `<li><div class="acc__row"><span class="lbl">${esc(n.name)}</span>
+      <button class="tog" aria-expanded="false" aria-label="Aufklappen">${ICO.chev}</button></div>
+      <div class="kids"><div class="acc__row"><a class="viewall" href="#">Alle ${esc(n.name)} ${ICO.arrow}</a></div>${accHTML(kids,depth+1)}</div></li>`;
+  }).join('')+`</ul>`;
+}
+function buildDrawer(){
+  drawerBody.innerHTML=accHTML(CATS,0);
+  drawerBody.querySelectorAll('.tog').forEach(t=>t.addEventListener('click',()=>{
+    const kids=t.closest('.acc__row').nextElementSibling;
+    const on=kids.classList.toggle('on'); t.setAttribute('aria-expanded',on?'true':'false');
+  }));
+}
+function openDrawer(){drawer.classList.add('on');scrim.classList.add('on');}
+function closeDrawer(){drawer.classList.remove('on');scrim.classList.remove('on');}
+document.getElementById('burger').addEventListener('click',e=>{e.stopPropagation();openDrawer();});
+document.getElementById('drawerClose').addEventListener('click',closeDrawer);
+drawer.addEventListener('click',e=>e.stopPropagation());
+document.getElementById('drawerSearch').addEventListener('input',function(){
+  const q=this.value.trim().toLowerCase();
+  drawerBody.querySelectorAll('.acc__row').forEach(r=>{
+    const txt=(r.textContent||'').toLowerCase();
+    r.parentElement.style.display = !q || txt.includes(q) ? '' : 'none';
+  });
+});
+
+/* ==================================================================== */
+/* Faux product grid + boot                                             */
+/* ==================================================================== */
+document.getElementById('fauxGrid').innerHTML = Array.from({length:8}).map((_,i)=>
+  `<div class="card"><div class="card__img">${ICO.search.replace('ico','ico')}</div>
+   <div class="card__b"><b>Artikel ${1001+i}</b><span>Sicherheitstechnik</span>
+   <div class="skeleton"></div><div class="skeleton s2"></div></div></div>`).join('');
+
+buildDrawer();
+setVariant(0);
+</script>
+
+<!-- approved demo tracker (verbatim, as on the other demo pages) -->
+<script>
+(function(d, t, g, k) {
+	var ph = d.createElement(t),
+	s = d.getElementsByTagName(t)[0],
+	t = (new URLSearchParams(window.location.search)).get(k);
+	t && localStorage.setItem(k, t);
+	t = localStorage.getItem(k);
+	ph.type = 'text/javascript';
+	ph.async = true;
+	ph.defer = true;
+	ph.charset = 'UTF-8';
+	ph.src = g + '&v=' + (new Date()).getTime();
+	ph.src += t ? '&' + k + '=' + t : '';
+	s.parentNode.insertBefore(ph, s);
+})(document, 'script', '//marcelreschke.com/?p=3078&ph_apikey=f5568bed853e02bd53efc7651c2aa2f9', 'ph_access_token');
+</script>
+</body>
+</html>
